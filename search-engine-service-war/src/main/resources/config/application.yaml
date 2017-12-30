@@ -1,0 +1,21 @@
+spring:
+  profiles.active: h2
+  main.banner-mode: 'off'
+  h2.console.enabled: true
+
+server.port: 8082
+
+---
+spring:
+  profiles: h2
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+    properties:
+      hibernate.jdbc.use_get_generated_keys: true
+      javax.persistence.validation.mode: none
+#  datasource:
+#    data: classpath:/init.sql
