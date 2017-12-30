@@ -9,7 +9,8 @@
 .gitignore
 
 ### IntelliJ IDEA ###
-.idea
+.ideajr
+/target/
 *.iws
 *.iml
 *.ipr

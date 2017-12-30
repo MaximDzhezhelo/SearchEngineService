@@ -8,12 +8,42 @@
     <artifactId>search-engine-service-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <name>SearchEngine Service Parent</name>
+
+    <properties>
+        <javax.persistence.version>2.1.0-RC1</javax.persistence.version>
+        <jackson.version>2.8.10</jackson.version>
+        <h2.version>1.4.196</h2.version>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>javax.persistence</artifactId>
+                <version>${javax.persistence.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <modules>
         <module>search-engine-service</module>
         <module>search-engine-service-client</module>
         <module>search-engine-service-war</module>
         <module>search-engine-service-common</module>
     </modules>
-
 
 </project>
