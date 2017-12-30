@@ -6,6 +6,8 @@
 .settings
 .springBeans
 
+.gitignore
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
