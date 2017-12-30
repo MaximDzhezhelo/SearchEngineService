@@ -1,4 +1,4 @@
-package com.kiev.makson.searchengine.test;
+package com.kiev.makson.searchengineservice;
 
 import com.kiev.makson.searchengineservice.SearchEngineService;
 import org.junit.runner.RunWith;
