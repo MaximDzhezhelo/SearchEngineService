@@ -1,12 +1,16 @@
-package com.kiev.makson.searchengineservice.model;
+package com.kiev.makson.searchengineservice.model.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
-@Entity(name = "DOCUMENTS")
+import static java.util.Objects.isNull;
+
+@Entity
+@Table(name = "DOCUMENTS")
 public class Document {
     @GenericGenerator(name = "documentSequence",
         strategy = "sequence",
@@ -17,10 +21,13 @@ public class Document {
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "documentSequence")
     private Long documentId;
 
-    @Column(name = "DOCUMENT_NAME")
+    @Column(name = "DOCUMENT_NAME", length = 50, nullable = false)
     private String documentName;
     @Column(name = "IDENTYFICATION_KEY")
     private String identificationKey;
+
+    @OneToMany(mappedBy = "document", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    private Set<Token> tokenSet;
 
     public Long getDocumentId() { return documentId; }
     public void setDocumentId(Long documentId) { this.documentId = documentId; }
@@ -33,6 +40,15 @@ public class Document {
         this.identificationKey = identificationKey;
     }
 
+    public Set<Token> getTokenSet() { return tokenSet; }
+    public void setTokenSet(Set<Token> tokenSet) { this.tokenSet = tokenSet; }
+
+    public static Document valueOf(final String fileName){
+        final Document document = new Document();
+        document.setDocumentName(fileName);
+        return document;
+    }
+
     @Override
     public String toString() {
         return "Document{" +
@@ -43,8 +59,6 @@ public class Document {
     }
 
     @PrePersist
-    public void pre() {
-        if (identificationKey == null)
-            identificationKey = UUID.randomUUID().toString();
-    }
+    public void setUpdate() { if (isNull(identificationKey)) identificationKey = UUID.randomUUID().toString(); }
+
 }

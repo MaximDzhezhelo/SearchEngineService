@@ -1,6 +1,6 @@
 package com.kiev.makson.searchengineservice.exception;
 
-public class SearchEngineException extends Exception{
+public class SearchEngineException extends RuntimeException{
 
     public SearchEngineException() { }
 
@@ -8,4 +8,5 @@ public class SearchEngineException extends Exception{
 
     public SearchEngineException(String message, Throwable cause) { super(message, cause); }
 
+    public SearchEngineException(Throwable cause) { super(cause); }
 }

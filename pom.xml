@@ -12,9 +12,12 @@
     <name>SearchEngine Service Parent</name>
 
     <properties>
+        <java.version>1.8</java.version>
         <javax.persistence.version>2.1.0-RC1</javax.persistence.version>
         <jackson.version>2.8.10</jackson.version>
         <h2.version>1.4.196</h2.version>
+        <mockito.version>1.10.19</mockito.version>
+        <org.powermock>1.6.4</org.powermock>
     </properties>
 
     <parent>

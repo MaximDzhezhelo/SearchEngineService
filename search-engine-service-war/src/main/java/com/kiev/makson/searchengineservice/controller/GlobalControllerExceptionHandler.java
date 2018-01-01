@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 
+    public static final String BAD_REQUEST = "We are sorry but your request contains bad syntax and cannot be fulfilled";
+
     @ExceptionHandler(SearchEngineException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody
     String exceptionHandler(SearchEngineException e) {
-        return "";  //todo implement it
+        return BAD_REQUEST;
     }
 
 }

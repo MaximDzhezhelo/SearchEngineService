@@ -2,6 +2,10 @@ spring:
   profiles.active: h2
   main.banner-mode: 'off'
   h2.console.enabled: true
+  http:
+      multipart:
+        max-file-size: 1000KB
+        max-request-size: 1000KB
 
 server.port: 8082
 
