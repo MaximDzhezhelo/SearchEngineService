@@ -4,7 +4,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static java.util.Objects.isNull;
@@ -26,8 +27,8 @@ public class Document {
     @Column(name = "IDENTYFICATION_KEY")
     private String identificationKey;
 
-    @OneToMany(mappedBy = "document", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
-    private Set<Token> tokenSet;
+    @Transient
+    private List<Token> tokens;
 
     public Long getDocumentId() { return documentId; }
     public void setDocumentId(Long documentId) { this.documentId = documentId; }
@@ -40,13 +41,29 @@ public class Document {
         this.identificationKey = identificationKey;
     }
 
-    public Set<Token> getTokenSet() { return tokenSet; }
-    public void setTokenSet(Set<Token> tokenSet) { this.tokenSet = tokenSet; }
+    public List<Token> getTokens() { return tokens; }
+    public void setTokens(List<Token> tokens) { this.tokens = tokens; }
 
     public static Document valueOf(final String fileName){
         final Document document = new Document();
         document.setDocumentName(fileName);
         return document;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Document document = (Document) o;
+        return Objects.equals(documentId, document.documentId) &&
+                Objects.equals(documentName, document.documentName) &&
+                Objects.equals(identificationKey, document.identificationKey);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(documentId, documentName, identificationKey);
     }
 
     @Override

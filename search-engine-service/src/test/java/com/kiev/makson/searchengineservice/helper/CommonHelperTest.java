@@ -4,8 +4,10 @@ import org.junit.Test;
 
 import java.util.UUID;
 
-import static com.kiev.makson.searchengineservice.helper.CommonHelper.*;
-import static org.junit.Assert.*;
+import static com.kiev.makson.searchengineservice.helper.CommonHelper.isValidIdentificationKey;
+import static com.kiev.makson.searchengineservice.helper.CommonHelper.isValidToken;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CommonHelperTest {
 
@@ -18,6 +20,16 @@ public class CommonHelperTest {
         assertFalse(isValidIdentificationKey(" "));
 
         assertTrue(isValidIdentificationKey(UUID.randomUUID().toString()));
+    }
+
+    @Test
+    public void testCheckValidToken(){
+        assertFalse(isValidToken(""));
+        assertFalse(isValidToken(null));
+        assertFalse(isValidToken(" "));
+
+        assertTrue(isValidToken("."));
+        assertTrue(isValidToken("text"));
     }
 
 }

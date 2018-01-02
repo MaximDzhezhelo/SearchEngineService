@@ -1,6 +1,8 @@
 package com.kiev.makson.searchengineservice.service.impl;
 
 import com.kiev.makson.searchengineservice.exception.SearchEngineException;
+import com.kiev.makson.searchengineservice.helper.CommonHelper;
+import com.kiev.makson.searchengineservice.model.dto.TokenDto;
 import com.kiev.makson.searchengineservice.model.entity.Document;
 import com.kiev.makson.searchengineservice.model.entity.Token;
 import com.kiev.makson.searchengineservice.model.repository.DocumentRepository;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -58,10 +61,27 @@ public class DocumentStorageService implements StorageService<Document> {
     public Document get(final String key) {
         if (!isValidIdentificationKey(key)) throw new SearchEngineException();
 
-        return documentRepository.findByIdentificationKey(key)
+        final Document document = documentRepository.findByIdentificationKey(key)
                 .stream()
                 .findAny()
                 .orElseThrow(SearchEngineException::new);
+
+        final List<Token> tokens = tokenRepository.findByDocument(document);
+        document.setTokens(tokens);
+
+        return document;
+    }
+
+    @Override
+    public Set<String> getKeys(final List<TokenDto> tokens) {
+        return tokens.stream()
+                .map(TokenDto::getToken)
+                .filter(CommonHelper::isValidToken)
+                .map(tokenRepository::findByToken)
+                .flatMap(Collection::stream)
+                .map(Token::getDocument)
+                .map(Document::getIdentificationKey)
+                .collect(toSet());
     }
 
     private Set<String> parseFile(final byte[] fileBytes) {

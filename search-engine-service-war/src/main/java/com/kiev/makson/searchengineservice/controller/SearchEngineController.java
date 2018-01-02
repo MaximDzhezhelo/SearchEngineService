@@ -1,10 +1,12 @@
 package com.kiev.makson.searchengineservice.controller;
 
+import com.kiev.makson.searchengineservice.model.dto.TokenDto;
 import com.kiev.makson.searchengineservice.model.entity.Document;
 import com.kiev.makson.searchengineservice.model.entity.Token;
 import com.kiev.makson.searchengineservice.service.StorageService;
 import com.kiev.makson.searchengineservice.service.impl.DocumentStorageService;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,7 +44,7 @@ public class SearchEngineController {
     public ResponseEntity<InputStreamResource> getDocument(@PathVariable String identificationKey) {
         final Document document = storageService.get(identificationKey);
 
-        final String content = createContent(document.getTokenSet());
+        final String content = createContent(document.getTokens());
 
         return ResponseEntity.ok()
                 .header(HEADER_KEY, HEADER_VALUE + document.getDocumentName())
@@ -53,18 +56,29 @@ public class SearchEngineController {
     @PostMapping
     public ResponseEntity<?> putDocument(@RequestParam(REQUEST_FILE_PARAM) final MultipartFile file) throws IOException {
         final String identificationKey = storageService.save(file);
-        URI location = ServletUriComponentsBuilder
+
+        final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(identificationKey).toUri();
 
         return ResponseEntity.created(location).build();
     }
 
-    protected String createContent(final Set<Token> tokenSet){
+    @PutMapping
+    public ResponseEntity<?> searchDocumentIdentificationKey(@RequestBody final List<TokenDto> tokens) {
+        Set<String> keys = storageService.getKeys(tokens);
+
+        if (keys.isEmpty()) return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(keys, HttpStatus.OK);
+    }
+
+    private String createContent(final List<Token> tokenSet){
         if(Objects.isNull(tokenSet)) return "";
 
         return tokenSet.stream()
                 .map(Token::getToken)
                 .collect(Collectors.joining(" "));
     }
+
 }

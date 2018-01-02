@@ -1,5 +1,5 @@
 spring:
-  profiles.active: h2
+  profiles.active: h2, db_log
   main.banner-mode: 'off'
   h2.console.enabled: true
   http:
@@ -11,7 +11,7 @@ server.port: 8082
 
 ---
 spring:
-  profiles: h2, db_log
+  profiles: h2
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
