@@ -26,8 +26,8 @@ What things you need to install the software and how to install them
 
 ## General info
 Subsystem **SearchEngineService** created for search token in Document;
-- **search-engine-service** - module for handle info in DB. 
-- **search-engine-service-war** - module for handle user requests;
+- **search-engine-service** - module for store data into DB.
+- **search-engine-service-war** - api module for work with data;
 
 ## Generall settings:
     a) urn  - '/search-engine';
