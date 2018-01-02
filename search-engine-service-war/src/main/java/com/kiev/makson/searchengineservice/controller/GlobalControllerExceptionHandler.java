@@ -18,13 +18,23 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody
     String handleSearchEngineException(SearchEngineException e) {
+        System.out.println(e.toString());
         return BAD_REQUEST;
     }
 
     @ExceptionHandler(IOException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody
-    String handleIOException(SearchEngineException e) {
+    String handleIOException(Exception e) {
+        System.out.println(e.toString());
+        return BAD_REQUEST;
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody
+    String handleException(Exception e) {
+        System.out.println(e.toString());
         return BAD_REQUEST;
     }
 }
