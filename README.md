@@ -1,24 +1,26 @@
 # SearchEngineService
 part of SearchEngine;
 
+[Read](https://github.com/MaximDzhezhelo/SearchEnginePortal/blob/master/GENERAL.md) more information about SearchEngine;
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+## Prerequisites
 
 What things you need to install the software and how to install them
 * Java 8
 * Maven
 
-### Installing
+## Installing
     mvn clean install
     
 ## Running the tests
     mvn clean test
     
 ## Run application
-    from **search-engine-service-war** folder
+    cd ~~/path/to/~~search-engine-service-war
     mvn clean spring-boot:run
     
 ## Built With
@@ -30,6 +32,6 @@ Subsystem **SearchEngineService** created for search token in Document;
 - **search-engine-service-war** - api module for work with data;
 
 ## Generall settings:
-    a) urn  - '/search-engine';
-    b) port - 8082;
+    1. urn  - '/search-engine';
+    2. port - 8082;
 
