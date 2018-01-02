@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "TOKENS")
@@ -39,6 +40,22 @@ public class Token {
         token.setToken(value);
         token.setDocument(document);
         return token;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Token token1 = (Token) o;
+        return Objects.equals(tokenId, token1.tokenId) &&
+                Objects.equals(token, token1.token) &&
+                Objects.equals(document, token1.document);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(tokenId, token, document);
     }
 
     @Override

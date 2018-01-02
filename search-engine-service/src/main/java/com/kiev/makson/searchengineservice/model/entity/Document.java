@@ -4,7 +4,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,9 +26,6 @@ public class Document {
     @Column(name = "IDENTYFICATION_KEY")
     private String identificationKey;
 
-    @Transient
-    private List<Token> tokens;
-
     public Long getDocumentId() { return documentId; }
     public void setDocumentId(Long documentId) { this.documentId = documentId; }
 
@@ -40,9 +36,6 @@ public class Document {
     public void setIdentificationKey(String identificationKey) {
         this.identificationKey = identificationKey;
     }
-
-    public List<Token> getTokens() { return tokens; }
-    public void setTokens(List<Token> tokens) { this.tokens = tokens; }
 
     public static Document valueOf(final String fileName){
         final Document document = new Document();

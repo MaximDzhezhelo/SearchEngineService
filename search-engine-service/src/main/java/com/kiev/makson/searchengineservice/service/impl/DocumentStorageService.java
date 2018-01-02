@@ -2,6 +2,7 @@ package com.kiev.makson.searchengineservice.service.impl;
 
 import com.kiev.makson.searchengineservice.exception.SearchEngineException;
 import com.kiev.makson.searchengineservice.helper.CommonHelper;
+import com.kiev.makson.searchengineservice.model.dto.DocumentDto;
 import com.kiev.makson.searchengineservice.model.dto.TokenDto;
 import com.kiev.makson.searchengineservice.model.entity.Document;
 import com.kiev.makson.searchengineservice.model.entity.Token;
@@ -23,7 +24,8 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 @Service
-public class DocumentStorageService implements StorageService<Document> {
+@Transactional
+public class DocumentStorageService implements StorageService<DocumentDto> {
 
     public static final String SPLITTER = " ";
 
@@ -58,7 +60,7 @@ public class DocumentStorageService implements StorageService<Document> {
     }
 
     @Override
-    public Document get(final String key) {
+    public DocumentDto get(final String key) {
         if (!isValidIdentificationKey(key)) throw new SearchEngineException();
 
         final Document document = documentRepository.findByIdentificationKey(key)
@@ -67,9 +69,7 @@ public class DocumentStorageService implements StorageService<Document> {
                 .orElseThrow(SearchEngineException::new);
 
         final List<Token> tokens = tokenRepository.findByDocument(document);
-        document.setTokens(tokens);
-
-        return document;
+        return DocumentDto.valueOf(document.getDocumentName(), tokens);
     }
 
     @Override

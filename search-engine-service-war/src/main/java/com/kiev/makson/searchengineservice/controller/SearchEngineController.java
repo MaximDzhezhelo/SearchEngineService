@@ -1,7 +1,7 @@
 package com.kiev.makson.searchengineservice.controller;
 
+import com.kiev.makson.searchengineservice.model.dto.DocumentDto;
 import com.kiev.makson.searchengineservice.model.dto.TokenDto;
-import com.kiev.makson.searchengineservice.model.entity.Document;
 import com.kiev.makson.searchengineservice.model.entity.Token;
 import com.kiev.makson.searchengineservice.service.StorageService;
 import com.kiev.makson.searchengineservice.service.impl.DocumentStorageService;
@@ -34,7 +34,7 @@ public class SearchEngineController {
     public static final String HEADER_KEY = "Content-Disposition";
     public static final String HEADER_VALUE = "attachment; filename=";
 
-    private final StorageService<Document> storageService;
+    private final StorageService<DocumentDto> storageService;
 
     public SearchEngineController(DocumentStorageService storageService) {
         this.storageService = storageService;
@@ -42,12 +42,12 @@ public class SearchEngineController {
 
     @GetMapping("/{identificationKey}")
     public ResponseEntity<InputStreamResource> getDocument(@PathVariable String identificationKey) {
-        final Document document = storageService.get(identificationKey);
+        final DocumentDto dto = storageService.get(identificationKey);
 
-        final String content = createContent(document.getTokens());
+        final String content = createContent(dto.getTokens());
 
         return ResponseEntity.ok()
-                .header(HEADER_KEY, HEADER_VALUE + document.getDocumentName())
+                .header(HEADER_KEY, HEADER_VALUE + dto.getName())
                 .contentLength(content.length())
                 .contentType(MediaType.parseMediaType(MEDIA_TYPE))
                 .body(new InputStreamResource(new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8))));

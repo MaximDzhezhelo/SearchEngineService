@@ -46,7 +46,6 @@
         <module>search-engine-service</module>
         <module>search-engine-service-client</module>
         <module>search-engine-service-war</module>
-        <module>search-engine-service-common</module>
     </modules>
 
 </project>
